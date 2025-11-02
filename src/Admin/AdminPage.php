@@ -88,8 +88,10 @@ class AdminPage {
     public function add_admin_menu() {
         add_submenu_page(
             'tools.php',
-            'Plugin Support Diagnostics',
-            'Plugin Support Diagnostics',
+            // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+            __( 'Plugin Support Diagnostics', 'pluginpulse-connect' ),
+            // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+            __( 'Plugin Support Diagnostics', 'pluginpulse-connect' ),
             'manage_options',
             'pluginpulse-connect',
             [$this, 'display_admin_page']
@@ -117,14 +119,16 @@ class AdminPage {
 
         add_settings_section(
             'fwpsd_general_section',
-            'General Settings',
+            // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+            __( 'General Settings', 'pluginpulse-connect' ),
             [$this, 'render_general_section'],
             'pluginpulse-connect'
         );
 
         add_settings_field(
             'fwpsd_plugin_options',
-            'Additional Options to Monitor',
+            // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+            __( 'Additional Options to Monitor', 'pluginpulse-connect' ),
             [$this, 'render_plugin_options_field'],
             'pluginpulse-connect',
             'fwpsd_general_section'
@@ -132,7 +136,8 @@ class AdminPage {
 
         add_settings_field(
             'fwpsd_shortcode_scan',
-            'Additional Shortcodes to Scan',
+            // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+            __( 'Additional Shortcodes to Scan', 'pluginpulse-connect' ),
             [$this, 'render_shortcode_scan_field'],
             'pluginpulse-connect',
             'fwpsd_general_section'
@@ -140,7 +145,8 @@ class AdminPage {
         
         add_settings_field(
             'fwpsd_freemius_modules',
-            'Freemius Modules',
+            // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+            __( 'Freemius Modules', 'pluginpulse-connect' ),
             [$this, 'render_freemius_modules_field'],
             'pluginpulse-connect',
             'fwpsd_general_section'
@@ -148,7 +154,8 @@ class AdminPage {
 
 	    add_settings_field(
 		    'fwpsd_manage_debug_constants',
-		    'Debug Constants Management',
+		    // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+		    __( 'Debug Constants Management', 'pluginpulse-connect' ),
 		    [$this, 'render_manage_debug_constants_field'],
 		    'pluginpulse-connect',
 		    'fwpsd_general_section'
@@ -156,7 +163,8 @@ class AdminPage {
 
         add_settings_field(
             'fwpsd_debug_constants',
-            'Debug Constants',
+            // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+            __( 'Debug Constants', 'pluginpulse-connect' ),
             [$this, 'render_debug_constants_field'],
             'pluginpulse-connect',
             'fwpsd_general_section'
@@ -164,7 +172,8 @@ class AdminPage {
 
         add_settings_field(
             'fwpsd_rest_endpoint',
-            'REST API Access',
+            // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+            __( 'REST API Access', 'pluginpulse-connect' ),
             [$this, 'render_rest_endpoint_field'],
             'pluginpulse-connect',
             'fwpsd_general_section'
@@ -172,7 +181,8 @@ class AdminPage {
 
         add_settings_field(
             'fwpsd_access_keys',
-            'Access Keys',
+            // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+            __( 'Access Keys', 'pluginpulse-connect' ),
             [$this, 'render_access_keys_field'],
             'pluginpulse-connect',
             'fwpsd_general_section'
@@ -340,7 +350,8 @@ class AdminPage {
      * Render general section
      */
     public function render_general_section() {
-        echo '<p>Configure how the support assistant collects and shares diagnostic information.</p>';
+        // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+        echo '<p>' . esc_html__( 'Configure how the support assistant collects and shares diagnostic information.', 'pluginpulse-connect' ) . '</p>';
     }
 
     /**
@@ -362,20 +373,25 @@ class AdminPage {
 
         // Display discovered shortcodes
         if (!empty($discovered_shortcodes)) {
-            echo '<div class="notice notice-info inline"><p><strong>Discovered shortcodes:</strong></p>';
+            // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+            echo '<div class="notice notice-info inline"><p><strong>' . esc_html__( 'Discovered shortcodes:', 'pluginpulse-connect' ) . '</strong></p>';
             echo '<ul style="margin-left: 15px;">';
             foreach ($discovered_shortcodes as $shortcode => $plugin_name) {
-                echo '<li><code>[' . esc_html($shortcode) . ']</code> from ' . esc_html($plugin_name) . '</li>';
+                /* translators: %s: plugin name */
+                // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+                echo '<li><code>[' . esc_html($shortcode) . ']</code> ' . sprintf( esc_html__( 'from %s', 'pluginpulse-connect' ), esc_html($plugin_name) ) . '</li>';
             }
             echo '</ul></div>';
         }
 
         // Show field for additional shortcodes
-        echo '<p><strong>Additional shortcodes to scan:</strong></p>';
+        // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+        echo '<p><strong>' . esc_html__( 'Additional shortcodes to scan:', 'pluginpulse-connect' ) . '</strong></p>';
         $additional_shortcodes = array_diff($current_shortcodes, array_keys($discovered_shortcodes));
         $shortcodes = implode("\n", $additional_shortcodes);
         echo '<textarea name="' . esc_attr($this->option_name) . '[scan_shortcodes]" rows="3" cols="50" class="large-text code">' . esc_textarea($shortcodes) . '</textarea>';
-        echo '<p class="description">Enter each additional shortcode tag on a new line (without brackets). These will be scanned in addition to automatically discovered shortcodes.</p>';
+        // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+        echo '<p class="description">' . esc_html__( 'Enter each additional shortcode tag on a new line (without brackets). These will be scanned in addition to automatically discovered shortcodes.', 'pluginpulse-connect' ) . '</p>';
     }
 
     /**
@@ -384,12 +400,14 @@ class AdminPage {
     public function render_plugin_options_field() {
         // Display discovered plugins and their options
         if (!empty($this->discovered_plugins)) {
-            echo '<div class="notice notice-info inline"><p><strong>Compatible plugins discovered:</strong></p>';
+            // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+            echo '<div class="notice notice-info inline"><p><strong>' . esc_html__( 'Compatible plugins discovered:', 'pluginpulse-connect' ) . '</strong></p>';
             echo '<ul style="margin-left: 15px; list-style: disc;">';
 
             foreach ($this->discovered_plugins as $plugin_path => $config) {
                 $plugin_name = $config['plugin_info']['name'];
-                echo '<li>' . esc_html($plugin_name) . ' <span class="description">(support-config.json found)</span>';
+                // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+                echo '<li>' . esc_html($plugin_name) . ' <span class="description">' . esc_html__( '(support-config.json found)', 'pluginpulse-connect' ) . '</span>';
 
                 if (isset($config['options_to_extract']) && is_array($config['options_to_extract'])) {
                     echo '<ul style="margin-left: 15px; list-style: circle;">';
@@ -408,9 +426,11 @@ class AdminPage {
 
         // Manual options
         $options = implode("\n", $this->settings['manual_plugin_options']);
-        echo '<h4>Additional Options to Include</h4>';
+        // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+        echo '<h4>' . esc_html__( 'Additional Options to Include', 'pluginpulse-connect' ) . '</h4>';
         echo '<textarea name="' . esc_attr($this->option_name) . '[manual_plugin_options]" rows="5" cols="50" class="large-text code">' . esc_textarea($options) . '</textarea>';
-        echo '<p class="description">Enter each option name on a new line. These WordPress options will be included in the diagnostic data in addition to any discovered from compatible plugins.</p>';
+        // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+        echo '<p class="description">' . esc_html__( 'Enter each option name on a new line. These WordPress options will be included in the diagnostic data in addition to any discovered from compatible plugins.', 'pluginpulse-connect' ) . '</p>';
     }
 
 	/**
@@ -426,33 +446,43 @@ class AdminPage {
 	 */
 	public function render_manage_debug_constants_field() {
 		$manage_debug = $this->settings['manage_debug_constants'] ?? false;
-		
+
 		echo '<div class="notice notice-warning inline" style="padding: 10px 12px; margin: 0 0 10px 0;">';
-		echo '<p><strong>Warning:</strong> This feature will modify your wp-config.php file to add or remove debug constants.</p>';
-		echo '<p>When enabled:</p>';
+		// phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+		echo '<p><strong>' . esc_html__( 'Warning:', 'pluginpulse-connect' ) . '</strong> ' . esc_html__( 'This feature will modify your wp-config.php file to add or remove debug constants.', 'pluginpulse-connect' ) . '</p>';
+		// phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+		echo '<p>' . esc_html__( 'When enabled:', 'pluginpulse-connect' ) . '</p>';
 		echo '<ul style="list-style: disc; margin-left: 20px;">';
-		echo '<li>A backup of your wp-config.php file will be created before making any changes</li>';
-		echo '<li>Debug constants selected below will be added to your wp-config.php file</li>';
-		echo '<li>Changes will be clearly marked with comment blocks</li>';
+		// phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+		echo '<li>' . esc_html__( 'A backup of your wp-config.php file will be created before making any changes', 'pluginpulse-connect' ) . '</li>';
+		// phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+		echo '<li>' . esc_html__( 'Debug constants selected below will be added to your wp-config.php file', 'pluginpulse-connect' ) . '</li>';
+		// phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+		echo '<li>' . esc_html__( 'Changes will be clearly marked with comment blocks', 'pluginpulse-connect' ) . '</li>';
 		echo '</ul>';
-		echo '<p>When disabled, all debug constants added by this plugin will be removed from wp-config.php.</p>';
+		// phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+		echo '<p>' . esc_html__( 'When disabled, all debug constants added by this plugin will be removed from wp-config.php.', 'pluginpulse-connect' ) . '</p>';
 		echo '</div>';
-		
+
 		echo '<p><label class="fwpsd-big-checkbox" style="font-weight: bold; font-size: 1.1em; padding: 8px; background: #f0f0f0; border: 1px solid #ddd; display: inline-block; border-radius: 4px;">';
 		echo '<input type="checkbox" id="fwpsd-manage-debug-constants" name="' . esc_attr($this->option_name) . '[manage_debug_constants]" value="1" ' . checked($manage_debug, true, false) . ' style="margin-right: 5px; transform: scale(1.5);">';
 		// phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
 		echo ' ' . esc_html__('Enable management of debug constants in wp-config.php', 'pluginpulse-connect') . '</label></p>';
 
-		echo '<p><strong>Current status:</strong> Debug constants management is ' .
-		     ($manage_debug ? '<span style="color: green;">enabled</span>' : '<span style="color: red;">disabled</span>') .
+		// phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+		echo '<p><strong>' . esc_html__( 'Current status:', 'pluginpulse-connect' ) . '</strong> ' . esc_html__( 'Debug constants management is', 'pluginpulse-connect' ) . ' ' .
+		     // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+		     ($manage_debug ? '<span style="color: green;">' . esc_html__( 'enabled', 'pluginpulse-connect' ) . '</span>' : '<span style="color: red;">' . esc_html__( 'disabled', 'pluginpulse-connect' ) . '</span>') .
 		     '</p>';
-		
+
 		// Check for backup files
 		$config_file_path = $this->locate_wp_config_file();
 		if ($config_file_path) {
 			$backups = glob(dirname($config_file_path) . '/wp-config.php.backup-*');
 			if (!empty($backups)) {
-				echo '<p><strong>Backups available:</strong> ' . count($backups) . ' wp-config.php backup(s) created</p>';
+				/* translators: %d: number of backups */
+				// phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+				echo '<p><strong>' . esc_html__( 'Backups available:', 'pluginpulse-connect' ) . '</strong> ' . sprintf( esc_html__( '%d wp-config.php backup(s) created', 'pluginpulse-connect' ), count($backups) ) . '</p>';
 			}
 		}
 	}
@@ -465,34 +495,41 @@ class AdminPage {
 
         if (!$manage_debug) {
             echo '<div class="notice notice-info inline">';
-            echo '<p><strong>Note:</strong> Enable the "Debug Constants Management" option above to modify debug constants in your wp-config.php file.</p>';
+            // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+            echo '<p><strong>' . esc_html__( 'Note:', 'pluginpulse-connect' ) . '</strong> ' . esc_html__( 'Enable the "Debug Constants Management" option above to modify debug constants in your wp-config.php file.', 'pluginpulse-connect' ) . '</p>';
             echo '</div>';
             return;
         }
-        
+
         echo '<div class="notice notice-info inline">';
-        echo '<p><strong>Note:</strong> Debug constants are defined early in the WordPress loading process and control error reporting behavior.</p>';
-        echo '<p>The constants you select below will be written to your wp-config.php file with clear markers and comments.</p>';
+        // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+        echo '<p><strong>' . esc_html__( 'Note:', 'pluginpulse-connect' ) . '</strong> ' . esc_html__( 'Debug constants are defined early in the WordPress loading process and control error reporting behavior.', 'pluginpulse-connect' ) . '</p>';
+        // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+        echo '<p>' . esc_html__( 'The constants you select below will be written to your wp-config.php file with clear markers and comments.', 'pluginpulse-connect' ) . '</p>';
         echo '</div>';
-        
+
         // Get debug constants status from transient if available
         $debug_constants_status = get_transient('fwpsd_debug_constants_status');
-        
+
         echo '<table class="widefat" style="margin-top: 10px;">';
-        echo '<thead><tr><th>Constant</th><th>Description</th><th>Current Value</th><th>Source</th><th>Enable in wp-config.php</th></tr></thead>';
+        // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+        echo '<thead><tr><th>' . esc_html__( 'Constant', 'pluginpulse-connect' ) . '</th><th>' . esc_html__( 'Description', 'pluginpulse-connect' ) . '</th><th>' . esc_html__( 'Current Value', 'pluginpulse-connect' ) . '</th><th>' . esc_html__( 'Source', 'pluginpulse-connect' ) . '</th><th>' . esc_html__( 'Enable in wp-config.php', 'pluginpulse-connect' ) . '</th></tr></thead>';
         echo '<tbody>';
 
         foreach ($this->known_debug_constants as $constant => $description) {
-            $current_value = defined($constant) ? constant($constant) : 'Not Defined';
+            // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+            $current_value = defined($constant) ? constant($constant) : __( 'Not Defined', 'pluginpulse-connect' );
             $is_enabled = isset($this->settings['debug_constants'][$constant]) ? $this->settings['debug_constants'][$constant] : false;
-            
+
             // Determine source with more detailed information
             if ($debug_constants_status && isset($debug_constants_status[$constant])) {
                 $source = $debug_constants_status[$constant]['set_by'];
             } else {
-                $source = defined($constant) ? 'wp-config.php' : 'Not set';
+                // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+                $source = defined($constant) ? __( 'wp-config.php', 'pluginpulse-connect' ) : __( 'Not set', 'pluginpulse-connect' );
                 if (defined($constant) && $is_enabled) {
-                    $source = 'wp-config.php (managed by plugin)';
+                    // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+                    $source = __( 'wp-config.php (managed by plugin)', 'pluginpulse-connect' );
                 }
             }
 
@@ -507,13 +544,8 @@ class AdminPage {
                 // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
                 echo '<td><span style="color: red;">' . esc_html__('false', 'pluginpulse-connect') . '</span></td>';
             } else {
-                // For non-boolean values, we need to handle the "Not Defined" text as translatable
-                if ($current_value === 'Not Defined') {
-                    // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
-                    echo '<td>' . esc_html__('Not Defined', 'pluginpulse-connect') . '</td>';
-                } else {
-                    echo '<td>' . esc_html($current_value) . '</td>';
-                }
+                // For non-boolean values, display as-is (already translated in assignment above)
+                echo '<td>' . esc_html($current_value) . '</td>';
             }
             echo '<td>' . esc_html($source) . '</td>';
             echo '<td><input type="checkbox" name="' . esc_attr($this->option_name) . '[debug_constants][' . esc_attr($constant) . ']" value="1" ' . checked($is_enabled, true, false) . '></td>';
@@ -521,10 +553,13 @@ class AdminPage {
         }
 
         echo '</tbody></table>';
-        
-        echo '<p class="description">These constants control WordPress debugging behavior. When enabled above, they will be added to your wp-config.php file.</p>';
-        echo '<p class="description">If you already have these constants defined elsewhere in your wp-config.php file, those definitions will take precedence.</p>';
-        echo '<p class="description">Changes will take effect immediately after saving settings and are removed when debug constant management is disabled.</p>';
+
+        // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+        echo '<p class="description">' . esc_html__( 'These constants control WordPress debugging behavior. When enabled above, they will be added to your wp-config.php file.', 'pluginpulse-connect' ) . '</p>';
+        // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+        echo '<p class="description">' . esc_html__( 'If you already have these constants defined elsewhere in your wp-config.php file, those definitions will take precedence.', 'pluginpulse-connect' ) . '</p>';
+        // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+        echo '<p class="description">' . esc_html__( 'Changes will take effect immediately after saving settings and are removed when debug constant management is disabled.', 'pluginpulse-connect' ) . '</p>';
     }
 
     /**
@@ -754,12 +789,15 @@ class AdminPage {
      */
     public function render_rest_endpoint_field() {
         $checked = $this->settings['enable_rest_endpoint'] ? 'checked' : '';
-        echo '<label><input type="checkbox" name="' . esc_attr($this->option_name) . '[enable_rest_endpoint]" value="1" ' . esc_attr($checked) . '> Enable REST API endpoint for remote diagnostics</label>';
+        // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+        echo '<label><input type="checkbox" name="' . esc_attr($this->option_name) . '[enable_rest_endpoint]" value="1" ' . esc_attr($checked) . '> ' . esc_html__( 'Enable REST API endpoint for remote diagnostics', 'pluginpulse-connect' ) . '</label>';
 
         if ($this->settings['enable_rest_endpoint']) {
             $rest_url = rest_url('fullworks-support-diagnostics/v1/diagnostics');
-            echo '<p class="description">REST API URL: <code>' . esc_url($rest_url) . '</code></p>';
-            echo '<p class="description">This endpoint requires the access key as a parameter.</p>';
+            // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+            echo '<p class="description">' . esc_html__( 'REST API URL:', 'pluginpulse-connect' ) . ' <code>' . esc_url($rest_url) . '</code></p>';
+            // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+            echo '<p class="description">' . esc_html__( 'This endpoint requires the access key as a parameter.', 'pluginpulse-connect' ) . '</p>';
         }
     }
 
@@ -767,10 +805,14 @@ class AdminPage {
      * Render access keys field
      */
     public function render_access_keys_field() {
-        echo '<p><strong>Access Key:</strong> <code>' . esc_html($this->settings['access_key']) . '</code></p>';
-        echo '<p><strong>REST Endpoint Key:</strong> <code>' . esc_html($this->settings['rest_endpoint_key']) . '</code></p>';
-        echo '<p><button type="button" id="wpsa-regenerate-keys" class="button">Regenerate Keys</button></p>';
-        echo '<p class="description">These keys provide access to diagnostic information. Keep them secure and regenerate if compromised.</p>';
+        // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+        echo '<p><strong>' . esc_html__( 'Access Key:', 'pluginpulse-connect' ) . '</strong> <code>' . esc_html($this->settings['access_key']) . '</code></p>';
+        // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+        echo '<p><strong>' . esc_html__( 'REST Endpoint Key:', 'pluginpulse-connect' ) . '</strong> <code>' . esc_html($this->settings['rest_endpoint_key']) . '</code></p>';
+        // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+        echo '<p><button type="button" id="wpsa-regenerate-keys" class="button">' . esc_html__( 'Regenerate Keys', 'pluginpulse-connect' ) . '</button></p>';
+        // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+        echo '<p class="description">' . esc_html__( 'These keys provide access to diagnostic information. Keep them secure and regenerate if compromised.', 'pluginpulse-connect' ) . '</p>';
     }
     
     /**
@@ -779,47 +821,55 @@ class AdminPage {
     public function render_freemius_modules_field() {
         // Display discovered Freemius modules
         if (!empty($this->settings['freemius_modules'])) {
-            echo '<div class="notice notice-info inline"><p><strong>Discovered Freemius modules:</strong></p>';
+            // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+            echo '<div class="notice notice-info inline"><p><strong>' . esc_html__( 'Discovered Freemius modules:', 'pluginpulse-connect' ) . '</strong></p>';
             echo '<ul style="margin-left: 15px; list-style: disc;">';
-            
+
             foreach ($this->settings['freemius_modules'] as $module_id => $module_config) {
                 $plugin_name = isset($module_config['plugin_name']) ? $module_config['plugin_name'] : $module_id;
                 $global_var = $module_config['global_variable'];
                 $is_manual = isset($module_config['manual_entry']) && $module_config['manual_entry'];
-                
+
                 // Check if this Freemius instance is loaded
                 $loaded_instances = $this->settings['loaded_freemius_instances'] ?? [];
                 $is_loaded = isset($loaded_instances[$module_id]) && $loaded_instances[$module_id]['loaded'];
-                $load_time = isset($loaded_instances[$module_id]['loaded_time']) ? 
+                $load_time = isset($loaded_instances[$module_id]['loaded_time']) ?
                     gmdate('Y-m-d H:i:s', $loaded_instances[$module_id]['loaded_time']) : 'never';
-                
+
                 // Check if the global variable exists in $GLOBALS
                 $exists_in_globals = isset($GLOBALS[$global_var]) && is_object($GLOBALS[$global_var]);
-                
-                echo '<li>' . esc_html($plugin_name) . ' <span class="description">(' . 
-                    ($is_manual ? 'manually added' : 'auto-discovered') . 
-                    ')</span>';
-                echo ' - Freemius global: <code>' . esc_html($global_var) . '</code>';
-                echo ' - Status: ';
-                
+
+                // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+                $manual_status = $is_manual ? esc_html__( 'manually added', 'pluginpulse-connect' ) : esc_html__( 'auto-discovered', 'pluginpulse-connect' );
+                echo '<li>' . esc_html($plugin_name) . ' <span class="description">(' . $manual_status . ')</span>';
+                // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+                echo ' - ' . esc_html__( 'Freemius global:', 'pluginpulse-connect' ) . ' <code>' . esc_html($global_var) . '</code>';
+                // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+                echo ' - ' . esc_html__( 'Status:', 'pluginpulse-connect' ) . ' ';
+
                 if ($is_loaded) {
-                    echo '<span style="color:green;">Loaded</span> (at ' . esc_html($load_time) . ')';
+                    /* translators: %s: timestamp */
+                    // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+                    echo '<span style="color:green;">' . esc_html__( 'Loaded', 'pluginpulse-connect' ) . '</span> ' . sprintf( esc_html__( '(at %s)', 'pluginpulse-connect' ), esc_html($load_time) );
                 } else {
-                    echo '<span style="color:red;">Not loaded</span> ';
+                    // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+                    echo '<span style="color:red;">' . esc_html__( 'Not loaded', 'pluginpulse-connect' ) . '</span> ';
                     if ($exists_in_globals) {
-                        echo '<span style="color:orange;">[Available in globals but hook not fired]</span>';
+                        // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+                        echo '<span style="color:orange;">' . esc_html__( '[Available in globals but hook not fired]', 'pluginpulse-connect' ) . '</span>';
                     }
                 }
-                
+
                 echo '</li>';
             }
-            
+
             echo '</ul></div>';
         }
-        
+
         // Manual modules configuration
-        echo '<h4>Additional Freemius Modules</h4>';
-        
+        // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+        echo '<h4>' . esc_html__( 'Additional Freemius Modules', 'pluginpulse-connect' ) . '</h4>';
+
         // Get manually configured modules
         $manual_freemius_modules = [];
         if (!empty($this->settings['freemius_modules'])) {
@@ -829,14 +879,17 @@ class AdminPage {
                 }
             }
         }
-        
-        echo '<textarea name="' . esc_attr($this->option_name) . '[manual_freemius_modules]" rows="3" cols="50" class="large-text code">' . 
-            esc_textarea(implode("\n", $manual_freemius_modules)) . 
+
+        echo '<textarea name="' . esc_attr($this->option_name) . '[manual_freemius_modules]" rows="3" cols="50" class="large-text code">' .
+            esc_textarea(implode("\n", $manual_freemius_modules)) .
             '</textarea>';
-        
-        echo '<p class="description">Enter each Freemius module on a new line in the format: <code>plugin_slug|global_variable_name</code></p>';
-        echo '<p class="description">Example: <code>my-plugin|my_fs</code> - This will collect Freemius data from the global variable <code>$my_fs</code> for the plugin.</p>';
-        echo '<p class="description">Alternatively, add a <code>freemius</code> section with a <code>global_variable</code> property to your plugin\'s <code>support-config.json</code> file to auto-discover Freemius modules.</p>';
+
+        // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+        echo '<p class="description">' . esc_html__( 'Enter each Freemius module on a new line in the format: plugin_slug|global_variable_name', 'pluginpulse-connect' ) . '</p>';
+        // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+        echo '<p class="description">' . esc_html__( 'Example: my-plugin|my_fs - This will collect Freemius data from the global variable $my_fs for the plugin.', 'pluginpulse-connect' ) . '</p>';
+        // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+        echo '<p class="description">' . esc_html__( 'Alternatively, add a freemius section with a global_variable property to your plugin\'s support-config.json file to auto-discover Freemius modules.', 'pluginpulse-connect' ) . '</p>';
     }
 
     /**
@@ -849,27 +902,31 @@ class AdminPage {
         }
 
         // Show success message if keys were regenerated
-        if (isset($_GET['keys_regenerated']) && 
-            wp_verify_nonce(sanitize_key(wp_unslash($_GET['_wpnonce'] ?? '')), 'fwpsd_regenerate_keys') && 
+        if (isset($_GET['keys_regenerated']) &&
+            wp_verify_nonce(sanitize_key(wp_unslash($_GET['_wpnonce'] ?? '')), 'fwpsd_regenerate_keys') &&
             sanitize_text_field(wp_unslash($_GET['keys_regenerated'])) === '1') {
-            echo '<div class="notice notice-success is-dismissible"><p>Access keys have been regenerated successfully.</p></div>';
+            // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+            echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Access keys have been regenerated successfully.', 'pluginpulse-connect' ) . '</p></div>';
         }
 
         // Show message if debug constants were updated
-        if (isset($_GET['settings-updated']) && 
+        if (isset($_GET['settings-updated']) &&
             sanitize_text_field(wp_unslash($_GET['settings-updated'])) === 'true') {
-            echo '<div class="notice notice-success is-dismissible"><p>Settings have been saved. If debug constants were modified, they will be applied to your wp-config.php file.</p></div>';
-            
+            // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+            echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Settings have been saved. If debug constants were modified, they will be applied to your wp-config.php file.', 'pluginpulse-connect' ) . '</p></div>';
+
             // Display current debug constants management status
             $options = get_option($this->option_name);
             $manage_debug = !empty($options['manage_debug_constants']);
             echo '<div class="notice notice-info is-dismissible">';
-            echo '<p><strong>Debug Constants Status:</strong> ' . 
-                ($manage_debug ? 'Enabled' : 'Disabled') . '</p>';
+            // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+            echo '<p><strong>' . esc_html__( 'Debug Constants Status:', 'pluginpulse-connect' ) . '</strong> ' .
+                // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+                ($manage_debug ? esc_html__( 'Enabled', 'pluginpulse-connect' ) : esc_html__( 'Disabled', 'pluginpulse-connect' )) . '</p>';
             echo '</div>';
-            
+
             // We now handle tab switching via URL parameter in the form redirect
-            
+
         }
 
         ?>
@@ -877,31 +934,64 @@ class AdminPage {
             <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
 
             <h2 class="nav-tab-wrapper">
-                <a href="#diagnostics" class="nav-tab nav-tab-active">Diagnostics</a>
-                <a href="#settings" class="nav-tab">Settings</a>
+                <?php
+                // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+                ?>
+                <a href="#diagnostics" class="nav-tab nav-tab-active"><?php echo esc_html__( 'Diagnostics', 'pluginpulse-connect' ); ?></a>
+                <?php
+                // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+                ?>
+                <a href="#settings" class="nav-tab"><?php echo esc_html__( 'Settings', 'pluginpulse-connect' ); ?></a>
             </h2>
 
             <div id="diagnostics" class="tab-content">
                 <div class="fw-card">
-                    <h2>Generate Diagnostic Information</h2>
-                    <p>This tool collects information about your WordPress installation, active plugins, theme, and plugin settings to help troubleshoot issues.</p>
+                    <?php
+                    // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+                    ?>
+                    <h2><?php echo esc_html__( 'Generate Diagnostic Information', 'pluginpulse-connect' ); ?></h2>
+                    <?php
+                    // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+                    ?>
+                    <p><?php echo esc_html__( 'This tool collects information about your WordPress installation, active plugins, theme, and plugin settings to help troubleshoot issues.', 'pluginpulse-connect' ); ?></p>
 
-                    <button type="button" id="wpsa-generate-data" class="button button-primary">Generate Diagnostic Data</button>
+                    <?php
+                    // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+                    ?>
+                    <button type="button" id="wpsa-generate-data" class="button button-primary"><?php echo esc_html__( 'Generate Diagnostic Data', 'pluginpulse-connect' ); ?></button>
 
                     <div id="wpsa-diagnostic-result" style="display: none; margin-top: 20px;">
-                        <h3>Diagnostic Information</h3>
+                        <?php
+                        // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+                        ?>
+                        <h3><?php echo esc_html__( 'Diagnostic Information', 'pluginpulse-connect' ); ?></h3>
                         <div class="notice notice-warning">
-                            <p><strong>Note:</strong> This information contains sensitive data about your WordPress installation. Only share it with trusted support personnel.</p>
+                            <?php
+                            // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+                            ?>
+                            <p><strong><?php echo esc_html__( 'Note:', 'pluginpulse-connect' ); ?></strong> <?php echo esc_html__( 'This information contains sensitive data about your WordPress installation. Only share it with trusted support personnel.', 'pluginpulse-connect' ); ?></p>
                         </div>
 
                         <div class="diagnostic-actions" style="margin-bottom: 15px;">
-                            <button type="button" id="wpsa-copy-data" class="button">Copy to Clipboard</button>
-                            <button type="button" id="wpsa-download-data" class="button">Download as JSON</button>
+                            <?php
+                            // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+                            ?>
+                            <button type="button" id="wpsa-copy-data" class="button"><?php echo esc_html__( 'Copy to Clipboard', 'pluginpulse-connect' ); ?></button>
+                            <?php
+                            // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+                            ?>
+                            <button type="button" id="wpsa-download-data" class="button"><?php echo esc_html__( 'Download as JSON', 'pluginpulse-connect' ); ?></button>
                             <?php if ($this->settings['enable_rest_endpoint']): ?>
                                 <div style="margin-top: 10px;">
-                                    <p><strong>Temporary Direct Access Link:</strong></p>
+                                    <?php
+                                    // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+                                    ?>
+                                    <p><strong><?php echo esc_html__( 'Temporary Direct Access Link:', 'pluginpulse-connect' ); ?></strong></p>
                                     <input type="text" id="wpsa-access-link" class="large-text code" readonly>
-                                    <p class="description">This link will work for 24 hours. Share it with support personnel for direct access to your diagnostic data.</p>
+                                    <?php
+                                    // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+                                    ?>
+                                    <p class="description"><?php echo esc_html__( 'This link will work for 24 hours. Share it with support personnel for direct access to your diagnostic data.', 'pluginpulse-connect' ); ?></p>
                                 </div>
                             <?php endif; ?>
                         </div>

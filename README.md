@@ -41,15 +41,17 @@ composer require pluginpulse/connect-library
 
 ```php
 <?php
-// In your main plugin file, after loading Composer autoloader
-require_once __DIR__ . '/vendor/autoload.php';
+// In your main plugin file
+use PluginPulse\Library\Core\LibraryBootstrap;
 
-// Initialize the library
-\PluginPulse\Library\Core\LibraryBootstrap::init([
-    'plugin_slug'    => 'my-plugin',
-    'plugin_name'    => 'My Plugin Name',
-    'plugin_version' => '1.0.0',
-]);
+add_action('plugins_loaded', function() {
+    LibraryBootstrap::init([
+        'plugin_slug'    => 'my-awesome-plugin',
+        'plugin_name'    => 'My Awesome Plugin',
+        'plugin_version' => '1.0.0',
+        'option_name'    => 'my_plugin_settings',  // WordPress option name for settings
+    ]);
+}, 5);
 ```
 
 ### Manual Integration
@@ -57,15 +59,17 @@ require_once __DIR__ . '/vendor/autoload.php';
 ```php
 <?php
 // In your main plugin file
-require_once __DIR__ . '/library/pluginpulse-connect/src/autoload.php';
+require_once __DIR__ . '/lib/pluginpulse-connect-library/src/autoload.php';
 
-// Initialize the library
-\PluginPulse\Library\Core\LibraryBootstrap::init([
-    'plugin_slug'    => 'my-plugin',
-    'plugin_name'    => 'My Plugin Name',
-    'plugin_version' => '1.0.0',
-    'library_path'   => __DIR__ . '/library/pluginpulse-connect',
-]);
+add_action('plugins_loaded', function() {
+    \PluginPulse\Library\Core\LibraryBootstrap::init([
+        'plugin_slug'    => 'my-awesome-plugin',
+        'plugin_name'    => 'My Awesome Plugin',
+        'plugin_version' => '1.0.0',
+        'option_name'    => 'my_plugin_settings',
+        'library_path'   => __DIR__ . '/lib/pluginpulse-connect-library',
+    ]);
+}, 5);
 ```
 
 ## Configuration Options
@@ -75,14 +79,40 @@ Full initialization configuration:
 ```php
 \PluginPulse\Library\Core\LibraryBootstrap::init([
     // Required
-    'plugin_slug'        => 'my-plugin',      // Unique plugin identifier
-    'plugin_name'        => 'My Plugin',      // Display name
-    'plugin_version'     => '1.0.0',         // Plugin version
+    'plugin_slug'          => 'my-plugin',      // Unique plugin identifier
+    'plugin_name'          => 'My Plugin',      // Display name
+    'plugin_version'       => '1.0.0',          // Plugin version
+    'option_name'          => 'my_plugin_opts', // WordPress option name for settings
 
     // Optional
-    'library_path'       => '',              // Path to library (auto-detected if empty)
-    'admin_menu_mode'    => 'unified',       // 'unified' or 'separate'
-    'enable_rest_api'    => true,            // Enable REST API endpoints
+    'library_path'         => '',               // Path to library (auto-detected if empty)
+    'enable_rest_api'      => true,             // Enable REST API endpoints (default: true)
+    'enable_admin_ui'      => true,             // Enable admin interface (default: true)
+    'diagnostics_callback' => null,             // Callable to return custom diagnostic data
+]);
+```
+
+### Custom Diagnostics Callback
+
+You can provide a callback function to include plugin-specific diagnostic data:
+
+```php
+LibraryBootstrap::init([
+    'plugin_slug'    => 'my-plugin',
+    'plugin_name'    => 'My Plugin',
+    'plugin_version' => '1.0.0',
+    'option_name'    => 'my_plugin_settings',
+
+    'diagnostics_callback' => function() {
+        return [
+            'custom_setting'  => get_option('my_custom_setting'),
+            'cache_enabled'   => wp_cache_get('my_cache_key') ? true : false,
+            'feature_flags'   => [
+                'feature_a' => true,
+                'feature_b' => false,
+            ],
+        ];
+    },
 ]);
 ```
 

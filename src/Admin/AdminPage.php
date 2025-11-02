@@ -91,7 +91,7 @@ class AdminPage {
             'Plugin Support Diagnostics',
             'Plugin Support Diagnostics',
             'manage_options',
-            'fullworks-support-diagnostics',
+            'pluginpulse-connect',
             [$this, 'display_admin_page']
         );
     }
@@ -119,14 +119,14 @@ class AdminPage {
             'fwpsd_general_section',
             'General Settings',
             [$this, 'render_general_section'],
-            'fullworks-support-diagnostics'
+            'pluginpulse-connect'
         );
 
         add_settings_field(
             'fwpsd_plugin_options',
             'Additional Options to Monitor',
             [$this, 'render_plugin_options_field'],
-            'fullworks-support-diagnostics',
+            'pluginpulse-connect',
             'fwpsd_general_section'
         );
 
@@ -134,7 +134,7 @@ class AdminPage {
             'fwpsd_shortcode_scan',
             'Additional Shortcodes to Scan',
             [$this, 'render_shortcode_scan_field'],
-            'fullworks-support-diagnostics',
+            'pluginpulse-connect',
             'fwpsd_general_section'
         );
         
@@ -142,7 +142,7 @@ class AdminPage {
             'fwpsd_freemius_modules',
             'Freemius Modules',
             [$this, 'render_freemius_modules_field'],
-            'fullworks-support-diagnostics',
+            'pluginpulse-connect',
             'fwpsd_general_section'
         );
 
@@ -150,7 +150,7 @@ class AdminPage {
 		    'fwpsd_manage_debug_constants',
 		    'Debug Constants Management',
 		    [$this, 'render_manage_debug_constants_field'],
-		    'fullworks-support-diagnostics',
+		    'pluginpulse-connect',
 		    'fwpsd_general_section'
 	    );
 
@@ -158,7 +158,7 @@ class AdminPage {
             'fwpsd_debug_constants',
             'Debug Constants',
             [$this, 'render_debug_constants_field'],
-            'fullworks-support-diagnostics',
+            'pluginpulse-connect',
             'fwpsd_general_section'
         );
 
@@ -166,7 +166,7 @@ class AdminPage {
             'fwpsd_rest_endpoint',
             'REST API Access',
             [$this, 'render_rest_endpoint_field'],
-            'fullworks-support-diagnostics',
+            'pluginpulse-connect',
             'fwpsd_general_section'
         );
 
@@ -174,7 +174,7 @@ class AdminPage {
             'fwpsd_access_keys',
             'Access Keys',
             [$this, 'render_access_keys_field'],
-            'fullworks-support-diagnostics',
+            'pluginpulse-connect',
             'fwpsd_general_section'
         );
 
@@ -440,7 +440,8 @@ class AdminPage {
 		
 		echo '<p><label class="fwpsd-big-checkbox" style="font-weight: bold; font-size: 1.1em; padding: 8px; background: #f0f0f0; border: 1px solid #ddd; display: inline-block; border-radius: 4px;">';
 		echo '<input type="checkbox" id="fwpsd-manage-debug-constants" name="' . esc_attr($this->option_name) . '[manage_debug_constants]" value="1" ' . checked($manage_debug, true, false) . ' style="margin-right: 5px; transform: scale(1.5);">';
-		echo ' ' . esc_html__('Enable management of debug constants in wp-config.php', 'fullworks-support-diagnostics') . '</label></p>';
+		// phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+		echo ' ' . esc_html__('Enable management of debug constants in wp-config.php', 'pluginpulse-connect') . '</label></p>';
 
 		echo '<p><strong>Current status:</strong> Debug constants management is ' .
 		     ($manage_debug ? '<span style="color: green;">enabled</span>' : '<span style="color: red;">disabled</span>') .
@@ -500,13 +501,16 @@ class AdminPage {
             echo '<td>' . esc_html($description) . '</td>';
             // Format the current value with proper escaping and translation
             if ($current_value === true) {
-                echo '<td><span style="color: green;">' . esc_html__('true', 'fullworks-support-diagnostics') . '</span></td>';
+                // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+                echo '<td><span style="color: green;">' . esc_html__('true', 'pluginpulse-connect') . '</span></td>';
             } elseif ($current_value === false) {
-                echo '<td><span style="color: red;">' . esc_html__('false', 'fullworks-support-diagnostics') . '</span></td>';
+                // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+                echo '<td><span style="color: red;">' . esc_html__('false', 'pluginpulse-connect') . '</span></td>';
             } else {
                 // For non-boolean values, we need to handle the "Not Defined" text as translatable
                 if ($current_value === 'Not Defined') {
-                    echo '<td>' . esc_html__('Not Defined', 'fullworks-support-diagnostics') . '</td>';
+                    // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- Library uses its own text domain
+                    echo '<td>' . esc_html__('Not Defined', 'pluginpulse-connect') . '</td>';
                 } else {
                     echo '<td>' . esc_html($current_value) . '</td>';
                 }
@@ -915,7 +919,7 @@ class AdminPage {
                         esc_attr(admin_url('tools.php?page=fullworks-support-diagnostics&tab=settings')) . '">';
                     
                     settings_fields('fwpsd_settings_group');
-                    do_settings_sections('fullworks-support-diagnostics');
+                    do_settings_sections('pluginpulse-connect');
                     submit_button();
                     ?>
                 </form>
@@ -949,7 +953,7 @@ class AdminPage {
         );
         
         // Set up script translations
-        wp_set_script_translations('fwpsd-admin-script', 'fullworks-support-diagnostics');
+        wp_set_script_translations('fwpsd-admin-script', 'pluginpulse-connect');
 
         // Epic integration: Uses plugin-specific nonce and REST URL from PAG-71
         wp_localize_script('fwpsd-admin-script', 'psdData', [

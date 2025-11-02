@@ -73,11 +73,11 @@ jQuery(document).ready(function($) {
                 // Use WordPress i18n functions for translatable strings
                 sprintf(
                     '%s\n\n• %s\n• %s\n• %s\n\n%s',
-                    __('WARNING: This will modify your wp-config.php file.', 'fullworks-support-diagnostics'),
-                    __('A backup will be created before changes', 'fullworks-support-diagnostics'),
-                    __('Debug constants you select will be added to wp-config.php', 'fullworks-support-diagnostics'),
-                    __('This can change your site\'s behavior and error logging', 'fullworks-support-diagnostics'),
-                    __('Are you sure you want to enable debug constants management?', 'fullworks-support-diagnostics')
+                    __('WARNING: This will modify your wp-config.php file.', 'pluginpulse-connect'),
+                    __('A backup will be created before changes', 'pluginpulse-connect'),
+                    __('Debug constants you select will be added to wp-config.php', 'pluginpulse-connect'),
+                    __('This can change your site\'s behavior and error logging', 'pluginpulse-connect'),
+                    __('Are you sure you want to enable debug constants management?', 'pluginpulse-connect')
                 )
             );
             
@@ -100,7 +100,7 @@ jQuery(document).ready(function($) {
         var $button = $(this);
         var $resultArea = $('#wpsa-diagnostic-result');
 
-        $button.prop('disabled', true).text(__('Generating...', 'fullworks-support-diagnostics'));
+        $button.prop('disabled', true).text(__('Generating...', 'pluginpulse-connect'));
 
         $.ajax({
             url: psdData.ajaxUrl,
@@ -134,7 +134,7 @@ jQuery(document).ready(function($) {
                 alert('Error: Could not communicate with the server. ' + error);
             },
             complete: function() {
-                $button.prop('disabled', false).text(__('Generate Diagnostic Data', 'fullworks-support-diagnostics'));
+                $button.prop('disabled', false).text(__('Generate Diagnostic Data', 'pluginpulse-connect'));
             }
         });
     });
@@ -148,7 +148,7 @@ jQuery(document).ready(function($) {
         // Show temporary success message
         var $button = $(this);
         var originalText = $button.text();
-        $button.text(__('Copied!', 'fullworks-support-diagnostics'));
+        $button.text(__('Copied!', 'pluginpulse-connect'));
         setTimeout(function() {
             $button.text(originalText);
         }, 2000);
@@ -173,12 +173,12 @@ jQuery(document).ready(function($) {
 
     // Regenerate keys
     $('#wpsa-regenerate-keys').on('click', function() {
-        if (!confirm(__('Are you sure you want to regenerate the access keys? Any existing links using the current keys will stop working.', 'fullworks-support-diagnostics'))) {
+        if (!confirm(__('Are you sure you want to regenerate the access keys? Any existing links using the current keys will stop working.', 'pluginpulse-connect'))) {
             return;
         }
 
         var $button = $(this);
-        $button.prop('disabled', true).text(__('Regenerating...', 'fullworks-support-diagnostics'));
+        $button.prop('disabled', true).text(__('Regenerating...', 'pluginpulse-connect'));
 
         $.ajax({
             url: psdData.ajaxUrl,
@@ -203,7 +203,7 @@ jQuery(document).ready(function($) {
                 alert('Error: Could not communicate with the server.');
             },
             complete: function() {
-                $button.prop('disabled', false).text(__('Regenerate Keys', 'fullworks-support-diagnostics'));
+                $button.prop('disabled', false).text(__('Regenerate Keys', 'pluginpulse-connect'));
             }
         });
     });

@@ -32,6 +32,9 @@
     },
     "scripts": {
         "test": "phpunit",
-        "phpcs": "phpcs src --standard=WordPress-Extra"
+        "phpcs": "phpcs src --standard=WordPress-Extra",
+        "post-update-cmd": [
+            "wp i18n make-pot . ./languages/pluginpulse-connect.pot --skip-audit --domain=pluginpulse-connect"
+        ]
     }
 }

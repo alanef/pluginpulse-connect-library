@@ -146,6 +146,9 @@ class LibraryBootstrap {
 			)
 		);
 
+		// Load text domain for library translations (only once)
+		self::load_library_textdomain( $library_path );
+
 		self::initialize_components( $config );
 
 		self::$initialized_plugins[ $plugin_slug ] = true;
@@ -373,6 +376,29 @@ class LibraryBootstrap {
 	private static function log_error( $message ) {
 		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 		error_log( 'PluginPulse Bootstrap ERROR: ' . $message );
+	}
+
+	/**
+	 * Load library text domain for translations
+	 *
+	 * @param string $library_path Path to library root directory.
+	 */
+	private static function load_library_textdomain( $library_path ) {
+		$locale = apply_filters( 'plugin_locale', determine_locale(), 'pluginpulse-connect' );
+		$mofile = $library_path . '/languages/pluginpulse-connect-' . $locale . '.mo';
+
+		// Try to load the .mo file if it exists
+		if ( file_exists( $mofile ) ) {
+			load_textdomain( 'pluginpulse-connect', $mofile );
+		}
+
+		self::log_debug(
+			sprintf(
+				'Library text domain loaded (locale: %s, mofile: %s)',
+				$locale,
+				$mofile
+			)
+		);
 	}
 
 	/**

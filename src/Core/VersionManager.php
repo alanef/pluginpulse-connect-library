@@ -41,13 +41,6 @@ class VersionManager {
 	private static $registered_plugins = array();
 
 	/**
-	 * Whether an admin notice has been queued
-	 *
-	 * @var bool
-	 */
-	private static $notice_queued = false;
-
-	/**
 	 * Register a plugin's library version and determine if it should load
 	 *
 	 * This method implements the "newest version wins" strategy. Each plugin
@@ -101,8 +94,6 @@ class VersionManager {
 			self::$active_version = $library_version;
 			self::$active_path    = $library_path;
 
-			// Queue admin notice if multiple versions detected
-			self::queue_admin_notice();
 
 			return true;
 		}
@@ -116,9 +107,6 @@ class VersionManager {
 				self::$active_version
 			)
 		);
-
-		// Queue admin notice if multiple versions detected
-		self::queue_admin_notice();
 
 		return false;
 	}
@@ -188,61 +176,6 @@ class VersionManager {
 	}
 
 	/**
-	 * Queue an admin notice about multiple library versions
-	 */
-	private static function queue_admin_notice() {
-		if ( self::$notice_queued || ! self::has_multiple_versions() ) {
-			return;
-		}
-
-		self::$notice_queued = true;
-
-		add_action( 'admin_notices', array( __CLASS__, 'display_admin_notice' ) );
-	}
-
-	/**
-	 * Display admin notice when multiple library versions are detected
-	 */
-	public static function display_admin_notice() {
-		if ( ! current_user_can( 'manage_options' ) || ! self::has_multiple_versions() ) {
-			return;
-		}
-
-		$plugin_count = count( self::$registered_plugins );
-		$active_plugin = self::get_plugin_by_path( self::$active_path );
-
-		echo '<div class="notice notice-info is-dismissible">';
-		echo '<p><strong>PluginPulse Connect Library:</strong> ';
-		printf(
-			/* translators: 1: number of plugins, 2: active version number, 3: active plugin slug */
-			esc_html__(
-				'Detected %1$d plugins using this library. Using version %2$s from %3$s.',
-				'pluginpulse-library'
-			),
-			(int) $plugin_count,
-			esc_html( self::$active_version ),
-			esc_html( $active_plugin )
-		);
-		echo '</p>';
-
-		// Show all registered versions
-		echo '<p><small>';
-		esc_html_e( 'Registered versions:', 'pluginpulse-library' );
-		echo '<ul style="margin: 5px 0 0 20px;">';
-		foreach ( self::$registered_plugins as $slug => $data ) {
-			$is_active = ( $data['path'] === self::$active_path ) ? ' (active)' : '';
-			printf(
-				'<li>%s: v%s%s</li>',
-				esc_html( $slug ),
-				esc_html( $data['version'] ),
-				esc_html( $is_active )
-			);
-		}
-		echo '</ul></small></p>';
-		echo '</div>';
-	}
-
-	/**
 	 * Reset the version manager (primarily for testing)
 	 *
 	 * @internal
@@ -251,6 +184,5 @@ class VersionManager {
 		self::$active_version      = null;
 		self::$active_path         = null;
 		self::$registered_plugins  = array();
-		self::$notice_queued       = false;
 	}
 }

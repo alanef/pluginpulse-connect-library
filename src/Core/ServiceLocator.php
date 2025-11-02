@@ -1,4 +1,3 @@
-
 <?php
 /**
  * Service Locator for PluginPulse Connect Library

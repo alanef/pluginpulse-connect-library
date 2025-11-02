@@ -98,12 +98,18 @@ if (!defined('ABSPATH')) {
 // Load Composer autoloader
 require_once __DIR__ . '/vendor/autoload.php';
 
+// Define plugin constants
+define( 'MY_PLUGIN_VERSION', '1.0.0' );
+define( 'MY_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+
 // Initialize PluginPulse Connect Library
 add_action('plugins_loaded', function() {
     \PluginPulse\Library\Core\LibraryBootstrap::init([
         'plugin_slug'    => 'my-awesome-plugin',
         'plugin_name'    => 'My Awesome Plugin',
-        'plugin_version' => '1.0.0',
+        'plugin_version' => MY_PLUGIN_VERSION,
+        'option_name'    => 'my_awesome_plugin_settings',
+        'plugin_url'     => MY_PLUGIN_URL,
     ]);
 }, 10);
 
@@ -130,12 +136,18 @@ if (!defined('ABSPATH')) {
 // Load library autoloader
 require_once __DIR__ . '/library/pluginpulse-connect/src/autoload.php';
 
+// Define plugin constants
+define( 'MY_PLUGIN_VERSION', '1.0.0' );
+define( 'MY_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+
 // Initialize PluginPulse Connect Library
 add_action('plugins_loaded', function() {
     \PluginPulse\Library\Core\LibraryBootstrap::init([
         'plugin_slug'    => 'my-awesome-plugin',
         'plugin_name'    => 'My Awesome Plugin',
-        'plugin_version' => '1.0.0',
+        'plugin_version' => MY_PLUGIN_VERSION,
+        'option_name'    => 'my_awesome_plugin_settings',
+        'plugin_url'     => MY_PLUGIN_URL,
         'library_path'   => __DIR__ . '/library/pluginpulse-connect',
     ]);
 }, 10);
@@ -167,20 +179,29 @@ add_action('plugins_loaded', function() {
     'plugin_version' => '1.0.0',
     // Your plugin version (semantic versioning recommended)
 
+    'option_name'    => 'my_plugin_settings',
+    // WordPress option name for storing plugin settings
+
+    'plugin_url'     => plugin_dir_url( __FILE__ ),
+    // Plugin URL for loading assets (JavaScript, CSS)
+    // Use plugin_dir_url( __FILE__ ) in your main plugin file
+
     // ===== OPTIONAL PARAMETERS =====
 
     'library_path'   => '',
     // Path to library directory (auto-detected for Composer)
     // Required for manual integration: __DIR__ . '/library/pluginpulse-connect'
 
-    'admin_menu_mode' => 'unified',
-    // Admin menu behavior:
-    // - 'unified': Single menu item with tabs (default, recommended)
-    // - 'separate': Separate menu item for each plugin
-
     'enable_rest_api' => true,
     // Enable REST API endpoints for remote diagnostics
     // Set to false to disable API endpoints entirely
+
+    'enable_admin_ui' => true,
+    // Enable admin interface
+    // Set to false to disable admin UI entirely
+
+    'diagnostics_callback' => null,
+    // Optional callback function to generate additional diagnostic data
 ]);
 ```
 
@@ -192,6 +213,8 @@ add_action('plugins_loaded', function() {
     'plugin_slug'    => 'my-plugin',
     'plugin_name'    => 'My Plugin',
     'plugin_version' => '1.0.0',
+    'option_name'    => 'my_plugin_settings',
+    'plugin_url'     => plugin_dir_url( __FILE__ ),
 ]);
 ```
 

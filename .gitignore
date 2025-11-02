@@ -1,0 +1,18 @@
+# Composer
+/vendor/
+/composer.lock
+
+# PHPUnit
+/.phpunit.result.cache
+/phpunit.xml
+
+# IDE
+.DS_Store
+.idea/
+*.iml
+*.iws
+.vscode/
+
+# OS
+Thumbs.db
+*.log

@@ -57,6 +57,13 @@ class AdminPage {
     private $known_debug_constants;
 
     /**
+     * Plugin URL for loading assets
+     *
+     * @var string
+     */
+    private $plugin_url;
+
+    /**
      * Constructor
      *
      * @param string $plugin_slug          Plugin identifier.
@@ -64,13 +71,15 @@ class AdminPage {
      * @param array  $settings             Plugin settings array.
      * @param array  $discovered_plugins   Discovered plugins with support-config.json.
      * @param array  $known_debug_constants Known debug constants.
+     * @param string $plugin_url           Plugin URL for loading assets.
      */
-    public function __construct( $plugin_slug, $option_name, $settings, $discovered_plugins, $known_debug_constants ) {
+    public function __construct( $plugin_slug, $option_name, $settings, $discovered_plugins, $known_debug_constants, $plugin_url = '' ) {
         $this->plugin_slug           = sanitize_key( $plugin_slug );
         $this->option_name           = $option_name;
         $this->settings              = $settings;
         $this->discovered_plugins    = $discovered_plugins;
         $this->known_debug_constants = $known_debug_constants;
+        $this->plugin_url            = $plugin_url;
     }
 
     /**
@@ -923,12 +932,17 @@ class AdminPage {
             return;
         }
 
-        // Fix the path to admin.js
-        $plugin_dir_url = plugin_dir_url(dirname(__DIR__)) . '/';
-        
+        // Load admin.js from plugin directory (passed via plugin_url parameter)
+        if ( ! empty( $this->plugin_url ) ) {
+            $script_url = $this->plugin_url . 'admin.js';
+        } else {
+            // Fallback to library directory for backward compatibility
+            $script_url = plugin_dir_url( dirname( __DIR__ ) ) . 'admin.js';
+        }
+
         wp_enqueue_script(
             'fwpsd-admin-script',
-            $plugin_dir_url . 'admin.js',
+            $script_url,
             ['jquery', 'wp-i18n'], // Add wp-i18n as a dependency for translations
             self::VERSION,
             true

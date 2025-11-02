@@ -56,6 +56,7 @@ class LibraryBootstrap {
 	 *                      - plugin_name (string, required): Display name
 	 *                      - plugin_version (string, required): Plugin version
 	 *                      - option_name (string, required): WordPress option name for settings
+	 *                      - plugin_url (string, required): Plugin URL for loading assets
 	 *                      - library_path (string, optional): Path to library directory
 	 *                      - enable_rest_api (bool, optional): Enable REST endpoint (default: true)
 	 *                      - enable_admin_ui (bool, optional): Enable admin interface (default: true)
@@ -70,6 +71,7 @@ class LibraryBootstrap {
 			'plugin_name'          => '',
 			'plugin_version'       => '',
 			'option_name'          => '',
+			'plugin_url'           => '',
 			'library_path'         => '',
 			'enable_rest_api'      => true,
 			'enable_admin_ui'      => true,
@@ -249,7 +251,8 @@ class LibraryBootstrap {
 				$option_name,
 				$settings,
 				$discovered_plugins,
-				$known_debug_constants
+				$known_debug_constants,
+				$config['plugin_url']
 			);
 
 			add_action( 'admin_menu', array( $admin_page, 'add_admin_menu' ) );
